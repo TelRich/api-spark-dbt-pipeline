@@ -1,30 +1,35 @@
 #%%
-from config import alpha_v, spark, logger, config
+import os
+import sys
+import yaml
+from alpha_vantage import AlphaVantageWrapper
+from logging_config import configure_logger
 
-logger.info('Starting script')
+# Load configuration from YAML file
+config = yaml.safe_load(open("config.yaml", "r"))
+
+# # Set up Spark Session
+# os.environ["PYSPARK_PYTHON"] = sys.executable
+# os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
+
+# Create Alpha Vantage wrapper
+alpha_v = AlphaVantageWrapper(api_key=config['API_KEY'])
+    
+# Create logger 
+logger = configure_logger()
 
 #%%
-function_name = "OVERVIEW"
+function_name1 = "OVERVIEW"
+function_name2 = "ETF_PROFILE"
 other_parameter = "symbol=IBM"
-status_code, data1 = alpha_v.make_base3_request(function_name=function_name, other_parameter=other_parameter)
+
+#%%
+status_code, overview = alpha_v.make_base3_request(function_name=function_name1, other_parameter=other_parameter)
+status_code, etf_profile = alpha_v.make_base3_request(function_name=function_name1, other_parameter=other_parameter)
+
+#%%
+overview
+
 # %%
-columns = list(data1.keys())
-sdf1 = spark.createDataFrame([data1], schema=columns)
-# %%
-sdf1.show()
-# %%
-# Assuming `data1` is the dictionary you receive from the API
-function_name = "OVERVIEW"
-other_parameter = "symbol=IBM"
-status_code, data1 = alpha_v.make_base3_request(function_name=function_name, other_parameter=other_parameter)
-
-# Convert the dictionary into a list of tuples to maintain the order
-data_list = [(k, v) for k, v in data1.items()]
-
-# Create the DataFrame with specified column names
-sdf1 = spark.createDataFrame(data_list, ["Key", "Value"])
-
-# Show the DataFrame in its original order
-sdf1.show()
-
+etf_profile
 #%%
