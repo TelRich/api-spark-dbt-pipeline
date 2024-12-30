@@ -21,11 +21,12 @@ logger = configure_logger()
 #%%
 function_name1 = "OVERVIEW"
 function_name2 = "ETF_PROFILE"
-other_parameter = "symbol=IBM"
+symbol1 = "IBM"
+symbol2 = "symbol=IBMP"
 
 #%%
-status_code, overview = alpha_v.make_base3_request(function_name=function_name1, other_parameter=other_parameter)
-status_code, etf_profile = alpha_v.make_base3_request(function_name=function_name1, other_parameter=other_parameter)
+status_code, overview = alpha_v.make_base3_request(function_name=function_name1, other_parameter=symbol1)
+status_code, etf_profile = alpha_v.make_base3_request(function_name=function_name2, other_parameter=symbol2)
 
 #%%
 overview
@@ -33,3 +34,6 @@ overview
 # %%
 etf_profile
 #%%
+r = alpha_v.search_symbol("SYMBOL_SEARCH", "keywords=IBM")
+# %%
+r

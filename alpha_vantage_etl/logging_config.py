@@ -1,7 +1,7 @@
 import logging
 
 def configure_logger():
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger("AlphaVantageETL")
     logger.setLevel(logging.INFO)
     
     file_handler = logging.FileHandler('retail_sales.log')
